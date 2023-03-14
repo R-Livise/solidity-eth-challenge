@@ -1,0 +1,26 @@
+{
+  "name": "solidity-eth-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RavilcoDev/solidity-eth-challenge.git"
+  },
+  "keywords": [],
+  "author": "Rafael Livise Larico <r.livise@hotmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RavilcoDev/solidity-eth-challenge/issues"
+  },
+  "homepage": "https://github.com/RavilcoDev/solidity-eth-challenge#readme",
+  "dependencies": {
+    "hardhat": "^2.13.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2"
+  }
+}
