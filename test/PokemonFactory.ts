@@ -10,7 +10,7 @@ describe("PokemonFactory", function () {
     return { pokemonFactory }
   }
 
-  describe("deploy", async function () {
+  describe("Deploy", async function () {
     it("Should to be empty array", async function () {
       const { pokemonFactory } = await loadFixture(deployPokemonFactory)
       const pokemons = await pokemonFactory.getAllPokemons()
@@ -34,15 +34,39 @@ describe("PokemonFactory", function () {
     })
   })
 
-  describe("event", async function () {
-    it("Should emit a event newPokemon", async function () {
+  describe("Reto 1: event", async function () {
+    it("Should emit an event newPokemon", async function () {
       const { pokemonFactory } = await loadFixture(deployPokemonFactory)
       const pokemonName = "bullbasur";
       const pokemonId = 1;
-      expect(pokemonFactory.createPokemon(pokemonId, pokemonName))
+      await expect(pokemonFactory.createPokemon(pokemonId, pokemonName))
         .to.emit(pokemonFactory, "eventNewPokemon")
         .withArgs(pokemonId, pokemonName)
     })
+  })
+
+  describe("Reto 2: require", async function () {
+    it("Should valdiate that id > 0", async function () {
+      const { pokemonFactory } = await loadFixture(deployPokemonFactory)
+      const pokemonName = "bullbasur";
+      let pokemonId = 0;
+      await expect(pokemonFactory.createPokemon(pokemonId, pokemonName))
+        .to.be.revertedWith(
+          "_id must to be greater than 0."
+        );
+    })
+
+    it("Should valdiate that name length characters > 2", async function () {
+      const { pokemonFactory } = await loadFixture(deployPokemonFactory)
+      const pokemonName = "bu";
+      let pokemonId = 1;
+      await expect(pokemonFactory.createPokemon(pokemonId, pokemonName))
+        .to.be.revertedWith(
+          "_name must to have a character lenght > 2."
+        );
+
+    })
+
   })
 
 })
