@@ -20,4 +20,14 @@ describe("PokemonsFactory", function () {
       expect(pokemons.length).to.equal(0);
     })
   })
+
+  describe("Deploy", async function () {
+    it("Should emit an event eventNewPokemon", async function () {
+      const { pokemonFactory } = await loadFixture(deployPokemonFactory)
+
+      await expect(pokemonFactory.createPokemon(1, "bullbasaur"))
+        .to.emit(pokemonFactory, "eventNewPokemon")
+        .withArgs(1, "bullbasaur")
+    })
+  })
 })
