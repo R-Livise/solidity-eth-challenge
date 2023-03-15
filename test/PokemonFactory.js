@@ -21,13 +21,22 @@ describe("PokemonsFactory", function () {
     })
   })
 
-  describe("Deploy", async function () {
+  describe("Events", async function () {
     it("Should emit an event eventNewPokemon", async function () {
       const { pokemonFactory } = await loadFixture(deployPokemonFactory)
 
       await expect(pokemonFactory.createPokemon(1, "bullbasaur"))
         .to.emit(pokemonFactory, "eventNewPokemon")
         .withArgs(1, "bullbasaur")
+    })
+  })
+
+  describe("Require", async function () {
+    it("Should validate reverted _id == 0", async function () {
+      const { pokemonFactory } = await loadFixture(deployPokemonFactory)
+
+      await expect(pokemonFactory.createPokemon(0, "bullbasaur"))
+        .to.be.reverted
     })
   })
 })
