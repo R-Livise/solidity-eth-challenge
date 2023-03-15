@@ -39,4 +39,18 @@ describe("PokemonsFactory", function () {
         .to.be.reverted
     })
   })
+
+  describe("Abilities", async function () {
+    it("Should have a pokemon with one ability", async function () {
+      const { pokemonFactory } = await loadFixture(deployPokemonFactory)
+
+      await pokemonFactory.createAbilities(1, "Punto toxico", "Envenena a pokemon rival")
+      await pokemonFactory.createPokemon(1, "bullbasaur")
+
+      await pokemonFactory.addAbilitiesToPokemon(1, 0)
+      const pokemons = await pokemonFactory.getAllPokemons()
+      expect(pokemons[0].abilities.length).to.equal(1)
+
+    })
+  })
 })
