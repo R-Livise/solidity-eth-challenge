@@ -46,6 +46,7 @@ contract PokemonFactory {
     struct Ability {
         string name;
         string description;
+        bool isSet;
     }
 
     mapping(uint => address) public pokemonToOwner;
@@ -54,7 +55,6 @@ contract PokemonFactory {
     mapping(uint => Ability) abilities;
 
     uint public currentPokemonId;
-    uint currentAbilityId;
     event eventNewPokemon(uint _id, string _name);
     event eventNewAbility(uint _id, string _name, string _description);
 
@@ -67,11 +67,7 @@ contract PokemonFactory {
         uint ZERO = 0;
 
         currentPokemonId++;
-        pokemons[currentPokemonId] = Pokemon(
-            _id,
-            _name,
-            [ZERO, ZERO, ZERO, ZERO]
-        );
+        pokemons[currentPokemonId] = Pokemon(_id, _name, [1, ZERO, ZERO, ZERO]);
         pokemonToOwner[currentPokemonId] = msg.sender;
         ownerPokemonCount[msg.sender]++;
         emit eventNewPokemon(_id, _name);
@@ -92,7 +88,18 @@ contract PokemonFactory {
             "_description must to have a character lenght > 2."
         );
 
-        abilities[_id] = Ability(_name, _description);
+        abilities[_id] = Ability(_name, _description, true);
         emit eventNewAbility(_id, _name, _description);
+    }
+
+    function changeAbilityToPokomeon(
+        uint _idPokemon,
+        uint _idAbility,
+        uint _position
+    ) public {
+        require(_idPokemon > 0, "_idPokemon must to be greater than 0.");
+        require(_position > 0, "_position must to be lower equal than 4.");
+        require(abilities[_idAbility].isSet, "_idAbility must not to be empty");
+        pokemons[_idPokemon].abilities[_position] = _idAbility;
     }
 }
