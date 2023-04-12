@@ -77,13 +77,6 @@ contract PokemonFactory {
         emit eventNewPokemon(_id, _name);
     }
 
-    function getResult() public pure returns (uint product, uint sum) {
-        uint a = 1;
-        uint b = 2;
-        product = a * b;
-        sum = a + b;
-    }
-
     function createAbilitys(
         uint _id,
         string memory _name,
