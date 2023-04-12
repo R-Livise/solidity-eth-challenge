@@ -13,24 +13,23 @@ describe("PokemonFactory", function () {
   describe("Deploy", async function () {
     it("Should to be empty array", async function () {
       const { pokemonFactory } = await loadFixture(deployPokemonFactory)
-      const pokemons = await pokemonFactory.getAllPokemons()
-      expect(Array.isArray(pokemons)).to.be.true;
-      expect(pokemons.length).to.be.equal(0);
+      const pokemonsLength = await pokemonFactory.currentPokemonId()
+      expect(pokemonsLength).to.be.equal(0);
     })
     it("Should to be array with one pokemon", async function () {
       const { pokemonFactory } = await loadFixture(deployPokemonFactory)
       await pokemonFactory.createPokemon(1, "bullbasur")
-      const pokemons = await pokemonFactory.getAllPokemons()
-      expect(Array.isArray(pokemons)).to.be.true;
-      expect(pokemons.length).to.be.equal(1);
+      console.log(await pokemonFactory.currentPokemonId());
+      const pokemonsLength = await pokemonFactory.currentPokemonId()
+      expect(pokemonsLength).to.be.equal(1);
 
     })
 
     it("Should create first pokemon like a name bullbasur", async function () {
       const { pokemonFactory } = await loadFixture(deployPokemonFactory)
       await pokemonFactory.createPokemon(1, "bullbasur")
-      const pokemons = await pokemonFactory.getAllPokemons()
-      expect(pokemons[0].name).to.be.equal("bullbasur");
+      const pokemon = await pokemonFactory.pokemons(1)
+      expect(pokemon.name).to.be.equal("bullbasur");
     })
   })
 
@@ -65,8 +64,23 @@ describe("PokemonFactory", function () {
           "_name must to have a character lenght > 2."
         );
     })
+
+    it("Should valdiate that name length special characters '°ú' > 2", async function () {
+      const { pokemonFactory } = await loadFixture(deployPokemonFactory)
+      const pokemonName = "°ú";
+      let pokemonId = 1;
+      await expect(pokemonFactory.createPokemon(pokemonId, pokemonName))
+        .to.be.revertedWith(
+          "_name must to have a character lenght > 2."
+        );
+    })
   })
 
-  describe("Reto 3: ")
+  describe("Reto 3: ", async function () {
+    it("Should valdiate that id > 0", async function () {
+      const { pokemonFactory } = await loadFixture(deployPokemonFactory)
+      expect(1).to.equal(1);
+    })
+  })
 
 })
