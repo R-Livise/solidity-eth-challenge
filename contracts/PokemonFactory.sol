@@ -2,6 +2,8 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
+import "./PokemonType.sol";
+
 library StringUtils {
     /**
      * @dev Returns the length of a given string
@@ -41,6 +43,7 @@ contract PokemonFactory {
         uint id;
         string name;
         uint[4] abilities;
+        uint32[2] types;
     }
 
     struct Ability {
@@ -58,7 +61,11 @@ contract PokemonFactory {
     event eventNewPokemon(uint _id, string _name);
     event eventNewAbility(uint _id, string _name, string _description);
 
-    function createPokemon(uint _id, string memory _name) public {
+    function createPokemon(
+        uint _id,
+        string memory _name,
+        uint32[2] memory types
+    ) public {
         require(_id > 0, "_id must to be greater than 0.");
         require(
             _name.strlen() > 2,
@@ -67,7 +74,12 @@ contract PokemonFactory {
         uint ZERO = 0;
 
         currentPokemonId++;
-        pokemons[currentPokemonId] = Pokemon(_id, _name, [1, ZERO, ZERO, ZERO]);
+        pokemons[currentPokemonId] = Pokemon(
+            _id,
+            _name,
+            [1, ZERO, ZERO, ZERO],
+            types
+        );
         pokemonToOwner[currentPokemonId] = msg.sender;
         ownerPokemonCount[msg.sender]++;
         emit eventNewPokemon(_id, _name);
